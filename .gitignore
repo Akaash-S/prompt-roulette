@@ -1,0 +1,35 @@
+# --- Internal planning docs: never push these to a public repo ---
+# They reference exact IAM policy/role names, account setup details, and
+# open strategic notes that don't need to be public even if not "secret."
+docs/internal/
+HANDOFF.md
+PROJECT.md
+AGENT_BRIEF.md
+
+# --- AWS / credentials ---
+.aws/
+*.pem
+*.env
+.env.*
+
+# --- Python (Lambda backend) ---
+__pycache__/
+*.pyc
+.venv/
+venv/
+*.egg-info/
+
+# --- Node (if any tooling ends up JS-based) ---
+node_modules/
+npm-debug.log*
+.DS_Store
+
+# --- Build / deploy artifacts ---
+*.zip
+dist/
+build/
+
+# --- Editor / OS cruft ---
+.vscode/
+.idea/
+Thumbs.db
