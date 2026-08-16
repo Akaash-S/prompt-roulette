@@ -98,7 +98,10 @@ No server setup or build step is required!
 
 ---
 
-## 📡 API Specification
+## 📡 Deployed Live API Endpoints & Specification
+
+- **`generate` Lambda Endpoint**: `https://xu27tiuthkyvoruzrrfym4y56y0zjvhm.lambda-url.ap-south-1.on.aws/`
+- **`gallery` Lambda Endpoint**: `https://jyqdnepdyt7ryji7aacrhsrmnu0qjpod.lambda-url.ap-south-1.on.aws/`
 
 ### `generate` Lambda (`POST /`)
 - **Request Body**:
@@ -138,3 +141,4 @@ No server setup or build step is required!
     "entry_id": "c1f7a070-5db9-4674-8d4e-128a1c97a5b3"
   }
   ```
+
