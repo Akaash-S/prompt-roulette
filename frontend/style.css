@@ -101,21 +101,6 @@ body {
   border-bottom: 2px solid var(--gold-primary);
 }
 
-.profile-icon {
-  margin-left: 1.5rem;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--gold-primary);
-  text-decoration: none;
-  transition: transform 0.2s ease, color 0.2s ease;
-}
-
-.profile-icon:hover {
-  color: var(--gold-hover);
-  transform: scale(1.1);
-}
-
 /* Main Container Layout */
 .main-content {
   flex: 1;
@@ -249,35 +234,86 @@ body {
   transform: translateY(-2px);
 }
 
+body.spin-page #spinBtn {
+  flex-shrink: 0;
+  margin-top: 0.25rem;
+  padding: clamp(0.55rem, 1.4vh, 0.85rem) clamp(1.4rem, 3.5vw, 2.1rem);
+  font-size: clamp(0.9rem, 2vh, 1.05rem);
+}
+
 /* Wheel Container (Spin Screen) */
+/* Spin Page Viewport-Fit Layout (Zero Scroll) */
+body.spin-page {
+  height: 100vh;
+  height: 100dvh;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+
+body.spin-page .header {
+  flex-shrink: 0;
+}
+
+body.spin-page .main-content {
+  flex: 1;
+  min-height: 0;
+  padding: 0.5rem 1rem 1rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+body.spin-page .hero-header {
+  margin-bottom: 0.25rem;
+  flex-shrink: 0;
+}
+
+body.spin-page .page-title {
+  font-size: clamp(1.5rem, 4vh, 2.6rem);
+  margin-bottom: 0.2rem;
+}
+
+body.spin-page .page-subtitle {
+  font-size: clamp(0.8rem, 1.8vh, 0.95rem);
+  line-height: 1.35;
+  max-width: 580px;
+}
+
 .wheel-wrapper {
   position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin: 1.5rem 0 2.5rem;
+  justify-content: center;
+  margin: 0.25rem 0 0.5rem;
+  flex-shrink: 1;
+  min-height: 0;
 }
 
 .wheel-pointer {
   width: 0;
   height: 0;
-  border-left: 18px solid transparent;
-  border-right: 18px solid transparent;
-  border-top: 26px solid var(--gold-primary);
+  border-left: 16px solid transparent;
+  border-right: 16px solid transparent;
+  border-top: 24px solid var(--gold-primary);
   position: absolute;
-  top: -12px;
+  top: -10px;
   z-index: 10;
   filter: drop-shadow(0 4px 6px rgba(0,0,0,0.6));
 }
 
 .wheel-container {
-  width: 380px;
-  height: 380px;
+  width: min(380px, 44vh, 75vw);
+  height: min(380px, 44vh, 75vw);
   border-radius: 50%;
-  border: 8px solid #2d2621;
+  border: 7px solid #2d2621;
   box-shadow: 0 0 0 3px var(--gold-primary), 0 15px 35px rgba(0,0,0,0.7);
   overflow: hidden;
   position: relative;
+  flex-shrink: 1;
 }
 
 #wheelCanvas {
@@ -714,7 +750,6 @@ body {
   .brand-logo { font-size: 1.3rem; letter-spacing: 1px; }
   .nav-links { gap: 0.75rem; }
   .nav-link { font-size: 0.85rem; }
-  .profile-icon { margin-left: 0.5rem; }
   .ticket-card { width: 92vw; padding: 1.25rem 1rem; }
   .ticket-category-title { font-size: 1.6rem; }
   .empty-title { font-size: 2rem; }
