@@ -1,7 +1,11 @@
 {
-  "AllowOrigins": ["*"],
-  "AllowMethods": ["POST"],
-  "AllowHeaders": ["content-type"]
+  "AllowOrigins": [
+    "https://akaash-s.github.io"
+  ],
+  "AllowMethods": [
+    "POST"
+  ],
+  "AllowHeaders": [
+    "content-type"
+  ]
 }
-
-

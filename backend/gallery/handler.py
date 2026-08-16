@@ -11,10 +11,7 @@ dynamodb = boto3.resource("dynamodb", region_name=REGION)
 table = dynamodb.Table(TABLE_NAME)
 
 CORS_HEADERS = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type,Authorization",
-    "Access-Control-Allow-Methods": "OPTIONS,POST"
+    "Content-Type": "application/json"
 }
 
 MAX_TEXT_LENGTH = 500

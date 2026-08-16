@@ -16,10 +16,7 @@ with open(os.path.join(DIR_PATH, "wordbanks.json"), "r", encoding="utf-8") as f:
 VALID_CATEGORIES = list(TEMPLATES.keys())
 
 CORS_HEADERS = {
-    "Content-Type": "application/json",
-    "Access-Control-Allow-Origin": "*",
-    "Access-Control-Allow-Headers": "Content-Type,Authorization",
-    "Access-Control-Allow-Methods": "OPTIONS,POST"
+    "Content-Type": "application/json"
 }
 
 def roll_rarity():
