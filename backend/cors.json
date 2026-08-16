@@ -1,0 +1,7 @@
+{
+  "AllowOrigins": ["*"],
+  "AllowMethods": ["POST"],
+  "AllowHeaders": ["content-type"]
+}
+
+

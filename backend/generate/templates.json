@@ -1,0 +1,8 @@
+{
+  "haiku": "{line1}\n{line2}\n{line3}",
+  "meme_caption": "{setup} {punchline}",
+  "plot_twist": "{protagonist} {normal_thing}, {twist}",
+  "band_name": "{adjective} {noun} {generic_phrase}",
+  "villain_line": "{hero_name}! I shall {evil_plan}, {dramatic_threat}",
+  "weird_invention": "{object} {modifier} {absurd_use}"
+}
