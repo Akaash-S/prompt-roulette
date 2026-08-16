@@ -702,3 +702,21 @@ body {
   .nav-container { padding: 1rem; }
   .nav-links { gap: 1rem; }
 }
+
+@media (max-width: 480px) {
+  .page-title { font-size: 1.8rem; letter-spacing: 1px; }
+  .landing-gold-title { font-size: 1.7rem; letter-spacing: 2px; }
+  .landing-gold-box { padding: 1.25rem 1rem; max-width: 92vw; }
+  .wheel-container { width: 280px; height: 280px; max-width: 85vw; max-height: 85vw; }
+  .wheel-wrapper { margin: 1rem 0 1.5rem; }
+  .nav-container { padding: 0.75rem 1rem; }
+  .brand-logo { font-size: 1.3rem; letter-spacing: 1px; }
+  .nav-links { gap: 0.75rem; }
+  .nav-link { font-size: 0.85rem; }
+  .profile-icon { margin-left: 0.5rem; }
+  .ticket-card { width: 92vw; padding: 1.25rem 1rem; }
+  .ticket-category-title { font-size: 1.6rem; }
+  .empty-title { font-size: 2rem; }
+  .gallery-grid { grid-template-columns: 1fr; }
+}
+
