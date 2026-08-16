@@ -3,74 +3,83 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Prompt Roulette — Spin & Generate Creative Prompts</title>
-  <meta name="description" content="Spin the wheel for random creative prompts: haikus, meme captions, plot twists, band names, villain monologues, and weird inventions with rarity drops!">
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@400;600;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+  <title>Prompt Roulette — Spin the Wheel</title>
   <link rel="stylesheet" href="style.css">
 </head>
 <body>
-  <div id="confetti-container"></div>
-  
-  <header class="site-header">
-    <div class="header-container">
-      <div class="logo">
-        <span class="logo-icon">🎰</span>
-        <span class="logo-text">PROMPT <span class="accent-text">ROULETTE</span></span>
-      </div>
+
+  <!-- Navigation Header -->
+  <header class="header">
+    <div class="nav-container">
+      <a href="../index.html" class="brand-logo">PROMPT ROULETTE</a>
       <nav class="nav-links">
-        <a href="index.html" class="nav-link active">Wheel Generator</a>
-        <a href="gallery.html" class="nav-link">Prompt Gallery</a>
+        <a href="../index.html" class="nav-link">The Landing</a>
+        <a href="index.html" class="nav-link active">Spin the Wheel</a>
+        <a href="gallery.html" class="nav-link">Prize Gallery</a>
+        <a href="#" class="profile-icon" title="Profile">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <circle cx="12" cy="8" r="4"/>
+            <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+          </svg>
+        </a>
       </nav>
     </div>
   </header>
 
+  <!-- Main Content Area -->
   <main class="main-content">
-    <div class="container hero-layout">
-      <!-- Wheel Container -->
-      <section class="wheel-section">
-        <div class="wheel-wrapper">
-          <div class="wheel-pointer">▼</div>
-          <div class="wheel-container" id="wheel">
-            <canvas id="wheelCanvas" width="400" height="400"></canvas>
-          </div>
-        </div>
-        <div class="spin-controls">
-          <button id="spinBtn" class="btn btn-primary btn-glow">
-            <span class="spin-icon">⚡</span> SPIN THE WHEEL
-          </button>
-        </div>
-      </section>
-
-      <!-- Result Showcase -->
-      <section class="result-section">
-        <div class="card result-card" id="resultCard">
-          <div class="card-header">
-            <span class="badge category-badge" id="resCategory">READY TO SPIN</span>
-            <span class="badge rarity-badge hidden" id="resRarity">COMMON</span>
-          </div>
-
-          <div class="card-body">
-            <p class="result-placeholder" id="placeholderText">Spin the wheel to roll a creative prompt!</p>
-            <p class="result-text hidden" id="resultText"></p>
-          </div>
-
-          <div class="card-actions hidden" id="actionButtons">
-            <button id="spinAgainBtn" class="btn btn-secondary">🔄 Spin Again</button>
-            <button id="remixBtn" class="btn btn-secondary">🎲 Remix Category</button>
-            <button id="saveBtn" class="btn btn-accent">💾 Save to Gallery</button>
-            <button id="copyBtn" class="btn btn-outline">📋 Copy</button>
-          </div>
-        </div>
-        <div id="toast" class="toast hidden"></div>
-      </section>
+    
+    <div class="hero-header">
+      <h1 class="page-title">SPIN THE WHEEL</h1>
+      <p class="page-subtitle">
+        Step right up! Let the mechanism decide your creative fate. What prompt will you draw tonight?
+      </p>
     </div>
+
+    <!-- Wheel Canvas Area (Matching Image 1) -->
+    <div class="wheel-wrapper">
+      <div class="wheel-pointer"></div>
+      <div class="wheel-container">
+        <canvas id="wheelCanvas" width="380" height="380"></canvas>
+      </div>
+    </div>
+
+    <!-- Pull Lever Button -->
+    <button id="spinBtn" class="btn btn-gold">PULL LEVER ⤶</button>
+
   </main>
 
-  <footer class="site-footer">
-    <p>Powered by AWS Lambda & DynamoDB | Guaranteed $0 Always-Free Tier</p>
-  </footer>
+  <!-- Result Ticket Modal (Matching Image 3) -->
+  <div id="ticketModal" class="ticket-modal-container">
+    <div class="ticket-card">
+      <div class="ticket-header">
+        <span id="ticketNo">NO. 00892</span>
+        <span>RESULT</span>
+      </div>
+
+      <h2 id="ticketCategory" class="ticket-category-title">Villain Monologue</h2>
+      <div id="ticketStamp" class="stamp-badge stamp-rare">RARE</div>
+
+      <div id="ticketQuote" class="ticket-quote-box">
+        "I have waited an eternity for this moment of minor inconvenience."
+      </div>
+
+      <div class="ticket-perforated-line"></div>
+
+      <div class="ticket-footer-text">
+        VALID FOR ONE USE<br>
+        * P R O M P T *
+      </div>
+
+      <div class="ticket-actions">
+        <button id="modalSpinAgain" class="btn btn-gold">🔁 SPIN AGAIN</button>
+        <button id="modalSave" class="btn btn-dark">📑 SAVE TO GALLERY</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="hidden"></div>
+  <div id="confetti-container"></div>
 
   <script src="app.js"></script>
 </body>
