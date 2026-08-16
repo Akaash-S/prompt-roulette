@@ -21,8 +21,98 @@ let isSpinning = false;
 let currentAngle = 0;
 let galleryItemsCache = [];
 
+/* --- Firebase Authentication Integration --- */
+const firebaseConfig = window.FIREBASE_CONFIG || {};
+
+if (window.firebase) {
+  try {
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseConfig);
+    }
+    firebase.auth().onAuthStateChanged((user) => {
+      updateNavAuthUI(user);
+    });
+  } catch (e) {
+    console.error("Firebase init error:", e);
+  }
+}
+
+async function getAuthToken() {
+  if (!window.firebase || !firebase.auth().currentUser) return null;
+  try {
+    return await firebase.auth().currentUser.getIdToken();
+  } catch (err) {
+    console.error("Failed to get Firebase ID token:", err);
+    return null;
+  }
+}
+
+async function loginWithGoogle() {
+  if (!window.firebase) {
+    showToast("Firebase Auth not loaded.");
+    return;
+  }
+  const provider = new firebase.auth.GoogleAuthProvider();
+  try {
+    await firebase.auth().signInWithPopup(provider);
+    showToast("👋 Signed in with Google!");
+  } catch (err) {
+    console.error("Google Sign-In error:", err);
+    if (err.code !== "auth/popup-closed-by-user") {
+      showToast("Sign-in failed. Please try again.");
+    }
+  }
+}
+
+async function logoutUser() {
+  if (!window.firebase) return;
+  try {
+    await firebase.auth().signOut();
+    showToast("Logged out successfully.");
+  } catch (err) {
+    console.error("Sign-out error:", err);
+  }
+}
+
+function updateNavAuthUI(user) {
+  const profileIcons = document.querySelectorAll(".profile-icon");
+  profileIcons.forEach((btn) => {
+    if (user) {
+      const displayName = user.displayName || user.email || "User";
+      const avatarUrl = user.photoURL;
+      if (avatarUrl) {
+        btn.innerHTML = `<img src="${avatarUrl}" alt="${escapeHtml(displayName)}" class="user-avatar-img" title="Signed in as ${escapeHtml(displayName)} (Click to Sign Out)" />`;
+      } else {
+        const initials = displayName.charAt(0).toUpperCase();
+        btn.innerHTML = `<span class="user-avatar-initial" title="Signed in as ${escapeHtml(displayName)} (Click to Sign Out)">${initials}</span>`;
+      }
+      btn.onclick = (e) => {
+        e.preventDefault();
+        if (confirm(`Signed in as ${displayName}.\nDo you want to sign out?`)) {
+          logoutUser();
+        }
+      };
+    } else {
+      btn.innerHTML = `
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="12" cy="8" r="4"/>
+          <path d="M4 20c0-4 4-6 8-6s8 2 8 6"/>
+        </svg>
+      `;
+      btn.title = "Sign in with Google";
+      btn.onclick = (e) => {
+        e.preventDefault();
+        loginWithGoogle();
+      };
+    }
+  });
+}
+
 // Initialize on DOM load
 document.addEventListener("DOMContentLoaded", () => {
+  if (window.firebase) {
+    updateNavAuthUI(firebase.auth().currentUser);
+  }
   const wheelCanvas = document.getElementById("wheelCanvas");
   if (wheelCanvas) {
     initWheel(wheelCanvas);
@@ -221,13 +311,26 @@ function typewriterEffect(element, text) {
 
 async function saveCurrentPrompt() {
   if (!currentPrompt) return;
+  const user = window.firebase ? firebase.auth().currentUser : null;
+  if (!user) {
+    showToast("🔒 Sign in with Google to save prompts!");
+    await loginWithGoogle();
+    if (!firebase.auth().currentUser) return;
+  }
+
   const modalSave = document.getElementById("modalSave");
   if (modalSave) modalSave.disabled = true;
 
   try {
+    const token = await getAuthToken();
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(API.GALLERY_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: headers,
       body: JSON.stringify({
         action: "save",
         entry_id: currentPrompt.id,
@@ -237,12 +340,15 @@ async function saveCurrentPrompt() {
       })
     });
 
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `HTTP ${res.status}`);
+    }
     showToast("✨ Saved to Prize Gallery!");
     closeTicketModal();
   } catch (err) {
     console.error("Error saving prompt:", err);
-    showToast("Failed to save to gallery.");
+    showToast(`Failed to save: ${err.message || "Error"}`);
   } finally {
     if (modalSave) modalSave.disabled = false;
   }
@@ -330,6 +436,13 @@ function renderGallery() {
 }
 
 async function handleUpvote(entryId, btnElement) {
+  const user = window.firebase ? firebase.auth().currentUser : null;
+  if (!user) {
+    showToast("🔒 Sign in with Google to upvote!");
+    await loginWithGoogle();
+    if (!firebase.auth().currentUser) return;
+  }
+
   if (btnElement.disabled) return;
   btnElement.disabled = true;
 
@@ -338,21 +451,37 @@ async function handleUpvote(entryId, btnElement) {
   countSpan.textContent = currentVotes + 1; // Optimistic update
 
   try {
+    const token = await getAuthToken();
+    const headers = { "Content-Type": "application/json" };
+    if (token) {
+      headers["Authorization"] = `Bearer ${token}`;
+    }
+
     const res = await fetch(API.GALLERY_URL, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      headers: headers,
       body: JSON.stringify({ action: "upvote", entry_id: entryId })
     });
-    if (!res.ok) throw new Error(`HTTP ${res.status}`);
+
+    if (res.status === 409) {
+      countSpan.textContent = currentVotes; // Revert
+      showToast("⚠️ You have already upvoted this ticket!");
+      btnElement.disabled = true;
+      return;
+    }
+
+    if (!res.ok) {
+      const errData = await res.json().catch(() => ({}));
+      throw new Error(errData.error || `HTTP ${res.status}`);
+    }
+
     showToast("👍 Upvoted!");
-    
-    // Update local cache
     const item = galleryItemsCache.find(i => i.entry_id === entryId);
     if (item) item.votes = (item.votes || 0) + 1;
   } catch (err) {
     console.error("Upvote error:", err);
     countSpan.textContent = currentVotes; // Revert
-    showToast("Failed to upvote.");
+    showToast(`Failed: ${err.message || "Error"}`);
     btnElement.disabled = false;
   }
 }

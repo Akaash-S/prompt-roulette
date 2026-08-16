@@ -658,6 +658,39 @@ body {
   transform: scale(1.1);
 }
 
+/* User Auth Profile Avatar */
+.user-avatar-img {
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--gold-primary);
+  object-fit: cover;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+  display: block;
+}
+
+.user-avatar-img:hover {
+  transform: scale(1.15);
+}
+
+.user-avatar-initial {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  background: var(--gold-primary);
+  color: var(--text-dark);
+  font-family: var(--font-mono);
+  font-weight: 700;
+  font-size: 0.85rem;
+  cursor: pointer;
+  line-height: 1;
+}
+
+
 .upvote-btn .vote-count {
   position: absolute;
   top: -6px;
