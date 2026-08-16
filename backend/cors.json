@@ -6,6 +6,7 @@
     "POST"
   ],
   "AllowHeaders": [
-    "content-type"
+    "content-type",
+    "authorization"
   ]
 }

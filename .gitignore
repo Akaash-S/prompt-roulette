@@ -18,6 +18,13 @@ __pycache__/
 .venv/
 venv/
 *.egg-info/
+*.dist-info/
+*.so
+backend/gallery/jwt/
+backend/gallery/cryptography/
+backend/gallery/cffi/
+backend/gallery/pycparser/
+backend/gallery/bin/
 
 # --- Node (if any tooling ends up JS-based) ---
 node_modules/
