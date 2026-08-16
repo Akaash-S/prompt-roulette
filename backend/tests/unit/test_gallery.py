@@ -11,23 +11,10 @@ class TestGalleryHandlerValidation(unittest.TestCase):
         res = gallery_handler({"body": json.dumps({"action": "fly_to_moon"})})
         self.assertEqual(res["statusCode"], 400)
 
-    def test_save_unauthorized_without_token(self):
-        res = gallery_handler({"body": json.dumps({
-            "action": "save",
-            "entry_id": "test-id",
-            "category": "haiku",
-            "text": "sample text",
-            "rarity": "common"
-        })})
-        self.assertEqual(res["statusCode"], 401)
-        body = json.loads(res["body"])
-        self.assertIn("unauthorized", body.get("error", ""))
-
     def test_save_missing_fields(self):
         res = gallery_handler({"body": json.dumps({
             "action": "save",
-            "text": "hello",
-            "token": "mock-user-123"
+            "text": "hello"
         })})
         self.assertEqual(res["statusCode"], 400)
 
@@ -38,19 +25,17 @@ class TestGalleryHandlerValidation(unittest.TestCase):
             "entry_id": "test-id",
             "category": "haiku",
             "text": long_text,
-            "rarity": "common",
-            "token": "mock-user-123"
+            "rarity": "common"
         })})
         self.assertEqual(res["statusCode"], 400)
         err = json.loads(res["body"]).get("error", "")
         self.assertIn("exceeds maximum length", err)
 
-    def test_upvote_unauthorized_without_token(self):
+    def test_upvote_missing_entry_id(self):
         res = gallery_handler({"body": json.dumps({
-            "action": "upvote",
-            "entry_id": "test-id"
+            "action": "upvote"
         })})
-        self.assertEqual(res["statusCode"], 401)
+        self.assertEqual(res["statusCode"], 400)
 
 if __name__ == "__main__":
     unittest.main()

@@ -11,8 +11,6 @@ AGENT_BRIEF.md
 *.pem
 *.env
 .env.*
-# frontend/firebase-config.js
-# firebase-config.js
 
 # --- Python (Lambda backend) ---
 __pycache__/
