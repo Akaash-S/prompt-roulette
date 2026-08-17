@@ -12,7 +12,12 @@
   <header class="header">
     <div class="nav-container">
       <a href="index.html" class="brand-logo">PROMPT ROULETTE</a>
-      <nav class="nav-links">
+      <button id="navToggle" class="nav-toggle" aria-label="Toggle Navigation Menu" aria-expanded="false">
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+        <span class="hamburger-bar"></span>
+      </button>
+      <nav id="navLinks" class="nav-links">
         <a href="index.html" class="nav-link active">The Landing</a>
         <a href="frontend/index.html" class="nav-link">Spin the Wheel</a>
         <a href="frontend/gallery.html" class="nav-link">Prize Gallery</a>
@@ -40,5 +45,6 @@
     </div>
   </main>
 
+  <script src="frontend/app.js"></script>
 </body>
 </html>

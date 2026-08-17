@@ -23,6 +23,8 @@ let galleryItemsCache = [];
 
 // Initialize on DOM load
 document.addEventListener("DOMContentLoaded", () => {
+  setupMobileNav();
+
   const wheelCanvas = document.getElementById("wheelCanvas");
   if (wheelCanvas) {
     initWheel(wheelCanvas);
@@ -35,6 +37,53 @@ document.addEventListener("DOMContentLoaded", () => {
     setupSortControl();
   }
 });
+
+/* --- Mobile Hamburger Navigation --- */
+function setupMobileNav() {
+  const toggleBtn = document.getElementById("navToggle");
+  const navLinks = document.getElementById("navLinks");
+  if (!toggleBtn || !navLinks) return;
+
+  function closeMenu() {
+    toggleBtn.classList.remove("open");
+    navLinks.classList.remove("open");
+    toggleBtn.setAttribute("aria-expanded", "false");
+  }
+
+  function toggleMenu(e) {
+    e.stopPropagation();
+    const isOpen = navLinks.classList.contains("open");
+    if (isOpen) {
+      closeMenu();
+    } else {
+      toggleBtn.classList.add("open");
+      navLinks.classList.add("open");
+      toggleBtn.setAttribute("aria-expanded", "true");
+    }
+  }
+
+  toggleBtn.addEventListener("click", toggleMenu);
+
+  const links = navLinks.querySelectorAll(".nav-link");
+  links.forEach(link => {
+    link.addEventListener("click", closeMenu);
+  });
+
+  document.addEventListener("click", (e) => {
+    if (navLinks.classList.contains("open")) {
+      const header = document.querySelector(".header");
+      if (header && !header.contains(e.target)) {
+        closeMenu();
+      }
+    }
+  });
+
+  document.addEventListener("keydown", (e) => {
+    if (e.key === "Escape" && navLinks.classList.contains("open")) {
+      closeMenu();
+    }
+  });
+}
 
 /* --- Wheel Drawing & Controls --- */
 
